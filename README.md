@@ -4,7 +4,9 @@
 
 ### Usage
 ```bash
-$ predict   # 길이와 무게를 입력하면 물고기의 종류를 예측합니다.
+$ fish-help      # 사용가능한 CLI Command를 출력합니다.
+
+$ fish-predict   # 길이와 무게를 입력하면 물고기의 종류를 예측합니다.
 🆕 물고기의 길이를 입력하세요(cm) :
 🆕 물고기의 무게를 입력하세요(kg) :
 🆕 도미가 맞나요? (y/n)
@@ -30,6 +32,6 @@ $ show-data
 ### Dependency
 ![pandas>=2.2.2](https://img.shields.io/badge/pandas>=2.2.2-150458.svg?style=for-the-badge&logo=pandas&logoColor=FFFFFF)
 ![scikit-learn>=1.5.1](https://img.shields.io/badge/scikit--learn>=1.5.1-F7931E.svg?style=for-the-badge&logo=scikit-learn&logoColor=FFFFFF)
-
+![typer>=0.12.5](https://img.shields.io/badge/typer>=0.12.5-000000.svg?style=for-the-badge&logo=scikit-learn&logoColor=FFFFFF)
 ### License
 - MIT

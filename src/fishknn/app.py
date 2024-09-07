@@ -7,7 +7,27 @@ filepath=os.path.dirname(os.path.abspath(__file__))
 
 
 def predict():
+    """
+    어종 분류기
 
+    길이와 무게를 input으로 받으면 해당 물고기가 도미인지 빙어인지 예측합니다.
+    해당 예측이 맞는지 input으로 받으며 해당 데이터를 csv로 저장합니다.
+
+    - 기존에 저장된 csv 데이터가 있는지 확인합니다. 
+      해당 파일을 DataFrame으로 불러오고 없으면 빈 DataFrame을 생성합니다.
+        
+    - 예측을 위해 model.pkl파일이 있는지 확인합니다.
+      파일이 있는 경우 훈련된 model에 의해 예측하고 없을 경우 도미로 예측합니다.
+
+    Args:
+        - None
+    Inputs:
+        - l : 물고기의 길이(cm)
+        - w : 물고기의 무게(kg)
+        - chk : 물고기에 대한 예측이 맞는지 확인 (y/n)
+    Returns:
+        - DataFrame
+    """
     os.makedirs(f"{filepath}/data/",exist_ok=True)
     os.makedirs(f"{filepath}/model/",exist_ok=True)
 
@@ -51,6 +71,21 @@ def predict():
 
 
 def train(data):
+    """
+    물고기 예측 훈련기
+
+    KNN 알고리즘을 이용하여 물고기의 종류를 예측하는 모형을 훈련합니다.
+    훈련이 끝나면 해당 모델을 pkl파일로 저장합니다.
+
+    - 받은 데이터의 길이(row 수) 1인 경우 훈련을 하지 않고 넘어갑니다.
+    - 받은 데이터의 길이(row 수) 5 미만인 경우 훈련에 사용하는 이웃의 수를 n으로 합니다.
+    - 받은 데이터의 길이(row 수) 5 이상인 경우 훈련에 사용하는 이웃의 수를 5로 합니다.
+
+    Args:
+        - data : 물고기의 길이와 무게, 레이블 정도가 담긴 DataFrame
+    Returns:
+        - model : 훈련된 모형을 반환합니다.
+    """
     print("🆕 훈련을 시작합니다.")
     #print(data)
 
@@ -90,6 +125,12 @@ def train(data):
     
 
 def get_pkl():
+    """
+    python package 경로에 저장된 pkl파일을 원하는 위치에 저장할 수 있도록 합니다.
+
+    추후 저장된 pkl파일을 이용하여 예측 성능 테스트를 진행하고자 하는 경우
+    모형을 load하기 편하도록 pkl파일을 복사하는 기능입니다.
+    """
     #os.path.expanduser("~")
 
     if os.path.exists(f"{filepath}/model/model.pkl"):
@@ -100,6 +141,9 @@ def get_pkl():
         print("⛔ 훈련된 pkl파일이 없습니다.\n⛔ 모델 훈련 후 다시 확인해주세요.")
 
 def show_data():
+    """
+    지금까지 csv로 저장된 data를 DataFrame형식으로 출력합니다.
+    """
     if os.path.exists(f"{filepath}/data/fish.csv"):
         df = pd.read_csv(f"{filepath}/data/fish.csv")
         df = df[["Length","Weight","Label"]]
@@ -108,5 +152,5 @@ def show_data():
         print("⛔ 저장된 데이터가 없습니다.")
 
 def run():
-    df = predict()
+    df = typer.run(predict())
     train(df)

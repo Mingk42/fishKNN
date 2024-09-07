@@ -1,6 +1,6 @@
 [project]
 name = "growKNN4fish"
-version = "0.5.2"
+version = "1.2.0"
 description = "growable fish classifier, KNN"
 authors = [
     {name = "Mingk42", email = "xoals123456t@gmail.com"},
@@ -14,9 +14,10 @@ readme = "README.md"
 license = {text = "MIT"}
 
 [project.scripts]
-predict="fishknn.app:run"
+fish-predict="fishknn.app:run"
 get-pkl="fishknn.app:get_pkl"
 show-data="fishknn.app:show_data"
+fish-help="fishknn.help:help"
 
 [tool.pdm]
 distribution = true
