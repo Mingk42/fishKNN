@@ -1,7 +1,9 @@
 from sklearn.neighbors import KNeighborsClassifier
 import pandas as pd
+import numpy as np
 import pickle
 import os
+import plotext as plx
 
 filepath=os.path.dirname(os.path.abspath(__file__))
 
@@ -89,7 +91,7 @@ def train(data):
     print("🆕 훈련을 시작합니다.")
     #print(data)
 
-    import numpy as np
+
     import time
     from datetime import datetime
 
@@ -119,6 +121,31 @@ def train(data):
     with open(f"{filepath}/model/model.pkl", "wb") as f:
         knn=pickle.dump(knn,f)
 
+    ###############################################
+    l_scaling=lambda x: (x-mu[0])/std[0]
+    w_scaling=lambda x: (x-mu[1])/std[1]
+
+    bream_data=df[df["Label"]=="도미"]
+    smelt_data=df[df["Label"]=="빙어"]
+
+    bream_l=l_scaling(bream_data["Length"])
+    bream_w=w_scaling(bream_data["Weight"])
+
+    smelt_l=l_scaling(smelt_data["Length"])
+    smelt_w=w_scaling(smelt_data["Weight"])
+
+    plx.scatter(bream_l,bream_w, color="blue", marker="*")
+    plx.scatter(smelt_l,smelt_w, color="green", marker="*")
+
+    plx.scatter([l_scaling(df.iloc[-1,0])],[w_scaling(df.iloc[-1,1])],color="red", marker="*")
+
+    plx.xlabel("Length")
+    plx.ylabel("Weight")
+
+    plx.plotsize(60,25)
+
+    plx.show()
+    ###################################################
     print(f"🆕 훈련을 종료합니다. (훈련시간 : {datetime.fromtimestamp(time.time()-t).second}초)")
 
     return knn
@@ -151,6 +178,40 @@ def show_data():
     else:
         print("⛔ 저장된 데이터가 없습니다.")
 
+def draw_plot():
+    """
+    지금까지 csv로 저장된 data를 scatter plot으로 출력합니다.
+    """
+    if os.path.exists(f"{filepath}/data/fish.csv"):
+        df = pd.read_csv(f"{filepath}/data/fish.csv")
+
+        mu=np.mean(df[["Length","Weight"]],axis=0)
+        std=np.std(df[["Length","Weight"]],axis=0)
+
+        l_scaling=lambda x: (x-mu.iloc[0])/std.iloc[0]
+        w_scaling=lambda x: (x-mu.iloc[1])/std.iloc[1]
+
+        bream_data=df[df["Label"]=="도미"]
+        smelt_data=df[df["Label"]=="빙어"]
+
+        bream_l=l_scaling(bream_data["Length"])
+        bream_w=w_scaling(bream_data["Weight"])
+
+        smelt_l=l_scaling(smelt_data["Length"])
+        smelt_w=w_scaling(smelt_data["Weight"])
+
+        plx.scatter(bream_l,bream_w, color="blue", marker="*")
+        plx.scatter(smelt_l,smelt_w, color="green", marker="*")
+
+        plx.xlabel("Length")
+        plx.ylabel("Weight")
+
+        plx.plotsize(60,25)
+
+        plx.show()
+    else:
+        print("⛔ 저장된 데이터가 없습니다.")
+
 def run():
-    df = typer.run(predict())
+    df = predict()
     train(df)

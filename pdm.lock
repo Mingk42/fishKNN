@@ -5,7 +5,7 @@
 groups = ["default", "note"]
 strategy = ["inherit_metadata"]
 lock_version = "4.5.0"
-content_hash = "sha256:a6f19cc8eb709709a29ba261b3aafd15c2cb11f72559a3670902c3f0c0a09d7d"
+content_hash = "sha256:0326dcc05fbc495e52b2929e53fb73148960ca749ac783d4f2c83bd31b572175"
 
 [[metadata.targets]]
 requires_python = ">=3.9"
@@ -1237,6 +1237,17 @@ groups = ["note"]
 files = [
     {file = "platformdirs-4.2.2-py3-none-any.whl", hash = "sha256:2d7a1657e36a80ea911db832a8a6ece5ee53d8de21edd5cc5879af6530b1bfee"},
     {file = "platformdirs-4.2.2.tar.gz", hash = "sha256:38b7b51f512eed9e84a22788b4bce1de17c0adb134d6becb09836e37d8654cd3"},
+]
+
+[[package]]
+name = "plotext"
+version = "5.2.8"
+requires_python = ">=3.5"
+summary = "plotext plots directly on terminal"
+groups = ["default"]
+files = [
+    {file = "plotext-5.2.8-py3-none-any.whl", hash = "sha256:7364cf72e6c9bffaf96158340fd2e0058faf404edbbc1e7a2aed421c8638d475"},
+    {file = "plotext-5.2.8.tar.gz", hash = "sha256:319a287baabeb8576a711995f973a2eba631c887aa6b0f33ab016f12c50ffebe"},
 ]
 
 [[package]]
