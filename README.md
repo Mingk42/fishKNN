@@ -94,5 +94,7 @@ Weight                       Length
 
 ![scikit-learn>=1.5.1](https://img.shields.io/badge/scikit--learn>=1.5.1-F7931E.svg?style=for-the-badge&logo=scikit-learn&logoColor=FFFFFF)
 
+![plotext>=5.2.8](https://img.shields.io/badge/plotext>=5.2.8-000000.svg?style=for-the-badge&logo=python&logoColor=FFFFFF)
+
 ### License
 - MIT
