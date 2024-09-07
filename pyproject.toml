@@ -21,6 +21,10 @@ show-data="fishknn.app:show_data"
 fish-help="fishknn.help:help"
 draw-plot="fishknn.app:draw_plot"
 
+[project.urls]
+hompage="https://github.com/Mingk42/fishKNN"
+issue="https://github.com/Mingk42/fishKNN/issues"
+
 [tool.pdm]
 distribution = true
 
