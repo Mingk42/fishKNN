@@ -1,7 +1,7 @@
 [project]
-name = "fishKNN"
-version = "0.5.0"
-description = "Default template for PDM package"
+name = "growKNN4fish"
+version = "0.5.2"
+description = "growable fish classifier, KNN"
 authors = [
     {name = "Mingk42", email = "xoals123456t@gmail.com"},
 ]
@@ -19,7 +19,7 @@ get-pkl="fishknn.app:get_pkl"
 show-data="fishknn.app:show_data"
 
 [tool.pdm]
-distribution = false
+distribution = true
 
 [tool.pdm.dev-dependencies]
 note = [

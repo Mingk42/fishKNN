@@ -28,8 +28,8 @@ $ show-data
 ```
 
 ### Dependency
-![pandas>=2.2.2](https://img.shields.io/badge/pandas>=2.2.2-150458.svg?style=for-the-badge&logo=pandas&logoColor=150458)
-![scikit-learn>=1.5.1](https://img.shields.io/badge/scikit-learn>=1.5.1-F7931E.svg?style=for-the-badge&logo=scikit-learn&logoColor=F7931E)
+![pandas>=2.2.2](https://img.shields.io/badge/pandas>=2.2.2-150458.svg?style=for-the-badge&logo=pandas&logoColor=FFFFFF)
+![scikit-learn>=1.5.1](https://img.shields.io/badge/scikit--learn>=1.5.1-F7931E.svg?style=for-the-badge&logo=scikit-learn&logoColor=FFFFFF)
 
 ### License
 - MIT
