@@ -1,6 +1,6 @@
 [project]
 name = "growKNN4fish"
-version = "1.2.0"
+version = "1.2.1"
 description = "growable fish classifier, KNN"
 authors = [
     {name = "Mingk42", email = "xoals123456t@gmail.com"},
