@@ -1,13 +1,9 @@
 from sklearn.neighbors import KNeighborsClassifier
 import pandas as pd
 import numpy as np
-import pickle
 import os
-import plotext as plx
 
 from fishknn import common
-
-filepath=os.path.dirname(os.path.abspath(__file__))
 
 
 def predict():
@@ -32,20 +28,16 @@ def predict():
     Returns:
         - DataFrame
     """
-    os.makedirs(f"{filepath}/data/",exist_ok=True)
-    os.makedirs(f"{filepath}/model/",exist_ok=True)
 
     CLASSES=["빙어","도미"]
 
     l=float(input("🆕 물고기의 길이를 입력하세요(cm) : "))
     w=float(input("🆕 물고기의 무게를 입력하세요(kg) : "))
 
-    df = common.load_csv()
-
+    df = common.load_df()
+    knn= common.load_pkl()
     ## 모델이 있는지
-    if os.path.exists(f"{filepath}/model/model.pkl"):
-        with open(f"{filepath}/model/model.pkl", "rb") as f:
-            knn=pickle.load(f)
+    if knn:
         pred=knn.predict([[l,w]])
         pred=CLASSES[int(pred)]
     else:
@@ -62,8 +54,8 @@ def predict():
         else:
             print("⛔ y 또는 n으로 답해주세요.")
             continue
-    #print(df)
-    df.to_csv(f"{filepath}/data/fish.csv")
+            
+    common.save_csv(df)
 
     return df
 
@@ -84,8 +76,8 @@ def train(data):
     Returns:
         - model : 훈련된 모형을 반환합니다.
     """
+
     print("🆕 훈련을 시작합니다.")
-    #print(data)
 
 
     import time
@@ -98,6 +90,7 @@ def train(data):
 
     if n<2:
         print("⛔ 충분한 데이터가 없습니다.")
+        print(f"🆕 훈련을 종료합니다. (훈련시간 : {datetime.fromtimestamp(time.time()-t).second}초)")
         return None
     elif n<5:
         knn=KNeighborsClassifier(n_neighbors=n)
@@ -114,34 +107,10 @@ def train(data):
 
     knn.fit(z,fish_label)
     
-    with open(f"{filepath}/model/model.pkl", "wb") as f:
-        knn=pickle.dump(knn,f)
+    common.save_pkl(knn)
 
-    ###############################################
-    l_scaling=lambda x: (x-mu[0])/std[0]
-    w_scaling=lambda x: (x-mu[1])/std[1]
+    common.draw_plot(df,True)
 
-    bream_data=df[df["Label"]=="도미"]
-    smelt_data=df[df["Label"]=="빙어"]
-
-    bream_l=l_scaling(bream_data["Length"])
-    bream_w=w_scaling(bream_data["Weight"])
-
-    smelt_l=l_scaling(smelt_data["Length"])
-    smelt_w=w_scaling(smelt_data["Weight"])
-
-    plx.scatter(bream_l,bream_w, color="blue", marker="*")
-    plx.scatter(smelt_l,smelt_w, color="green", marker="*")
-
-    plx.scatter([l_scaling(df.iloc[-1,0])],[w_scaling(df.iloc[-1,1])],color="red", marker="*")
-
-    plx.xlabel("Length")
-    plx.ylabel("Weight")
-
-    plx.plotsize(60,25)
-
-    plx.show()
-    ###################################################
     print(f"🆕 훈련을 종료합니다. (훈련시간 : {datetime.fromtimestamp(time.time()-t).second}초)")
 
     return knn
@@ -154,12 +123,18 @@ def get_pkl():
     추후 저장된 pkl파일을 이용하여 예측 성능 테스트를 진행하고자 하는 경우
     모형을 load하기 편하도록 pkl파일을 복사하는 기능입니다.
     """
-    #os.path.expanduser("~")
+    
+    knn=common.load_pkl()
 
-    if os.path.exists(f"{filepath}/model/model.pkl"):
-        path=input("🆕 pkl파일을 저장할 경로를 입력해주세요 : ")
-        os.system(f"cp {filepath}/model/model.pkl {path}/model.pkl")
-        print(f"🆕 저장이 완료되었습니다.(저장경로 : {path}/model.pkl)")
+    if knn:
+        default_path=os.path.abspath(os.path.curdir)
+        
+        print("🆕 pkl파일을 저장할 경로를 입력해주세요(현재 경로기준 상대경로)")
+        path=input(f" >>> {default_path}/")
+        path=f"{default_path}/{path}"
+
+        save_path=common.save_pkl(knn,path)
+        print(f"🆕 저장이 완료되었습니다.(저장경로 : {save_path})")
     else:
         print("⛔ 훈련된 pkl파일이 없습니다.\n⛔ 모델 훈련 후 다시 확인해주세요.")
 
@@ -167,7 +142,8 @@ def show_data():
     """
     지금까지 csv로 저장된 data를 DataFrame형식으로 출력합니다.
     """
-    df = common.load_csv()
+    
+    df = common.load_df()
     print(df)
 
 
@@ -175,32 +151,10 @@ def draw_plot():
     """
     지금까지 csv로 저장된 data를 scatter plot으로 출력합니다.
     """
-    df = common.load_csv()
 
-    mu=np.mean(df[["Length","Weight"]],axis=0)
-    std=np.std(df[["Length","Weight"]],axis=0)
+    df = common.load_df()
 
-    l_scaling=lambda x: (x-mu.iloc[0])/std.iloc[0]
-    w_scaling=lambda x: (x-mu.iloc[1])/std.iloc[1]
-
-    bream_data=df[df["Label"]=="도미"]
-    smelt_data=df[df["Label"]=="빙어"]
-
-    bream_l=l_scaling(bream_data["Length"])
-    bream_w=w_scaling(bream_data["Weight"])
-
-    smelt_l=l_scaling(smelt_data["Length"])
-    smelt_w=w_scaling(smelt_data["Weight"])
-
-    plx.scatter(bream_l,bream_w, color="blue", marker="*")
-    plx.scatter(smelt_l,smelt_w, color="green", marker="*")
-
-    plx.xlabel("Length")
-    plx.ylabel("Weight")
-
-    plx.plotsize(60,25)
-
-    plx.show()
+    common.draw_plot(df)
 
 def run():
     df = predict()

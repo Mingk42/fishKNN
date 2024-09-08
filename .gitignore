@@ -164,3 +164,4 @@ cython_debug/
 site-package.path.txt
 note/
 *.bck
+.python-version

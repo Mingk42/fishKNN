@@ -6,6 +6,7 @@
 - `0.5.x` : project init publish. predict & get-pkl.
 - `1.2.x` : help msg added.
 - `2.0.x` : scatter plot added.
+- `3.0.x` : common.py added (remove duplicated code) 
 
 ### Installation
 ```
@@ -57,11 +58,12 @@ $ fish-predict   # 길이와 무게를 입력하면 물고기의 종류를 예�
      └┬────────────┬────────────┬────────────┬────────────┬┘
     -0.74        -0.10        0.54         1.18        1.82
 Weight                       Length
-🆕 훈련을 종료합니다. (훈련시간 : 59초)
 ⛔ 충분한 데이터가 없습니다.    # csv에 저장된 데이터가 1개인 경우
+🆕 훈련을 종료합니다. (훈련시간 : 0초)
 
 $ get-pkl   # model.pkl 파일을 원하는 위치에 저장합니다. 추후 테스트를 위해 pkl파일을 가져오기 위한 프로그램입니다.
-🆕 pkl파일을 저장할 경로를 입력해주세요 :
+🆕 pkl파일을 저장할 경로를 입력해주세요(현재 경로기준 상대경로)
+ >>> /home/root2/hw/fishKNN/
 
 ⛔ 훈련된 pkl파일이 없습니다.       # 저장된 pkl파일이 없는 경우 발생.
 ⛔ 모델 훈련 후 다시 확인해주세요.
