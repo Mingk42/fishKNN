@@ -48,7 +48,7 @@ def predict():
         std=np.std(np.column_stack([ll, wl]),axis=0)
 
         scaled_l=(l-mu[0])/std[0]
-        scaled_w=(l-mu[1])/std[1]
+        scaled_w=(w-mu[1])/std[1]
 
         pred=knn.predict([[scaled_l,scaled_w]])
         pred=CLASSES[int(pred)]
