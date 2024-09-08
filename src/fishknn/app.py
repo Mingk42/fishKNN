@@ -38,7 +38,19 @@ def predict():
     knn= common.load_pkl()
     ## 모델이 있는지
     if knn:
-        pred=knn.predict([[l,w]])
+        ll=df["Length"].to_list()
+        ll.append(l)
+        
+        wl=df["Weight"].to_list()
+        wl.append(w)
+
+        mu=np.mean(np.column_stack([ll, wl]),axis=0)
+        std=np.std(np.column_stack([ll, wl]),axis=0)
+
+        scaled_l=(l-mu[0])/std[0]
+        scaled_w=(l-mu[1])/std[1]
+
+        pred=knn.predict([[scaled_l,scaled_w]])
         pred=CLASSES[int(pred)]
     else:
         pred="도미"
