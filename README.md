@@ -2,6 +2,11 @@
 
 물고기의 길이와 무게를 입력하면 해당 물고기가 도미인지 빙어인지 예측하는 프로그램입니다. 예측 후에는 해당 예측이 맞았는지 확인하며, 해당 데이터를 csv로 저장하고 다시 학습을 진행하는 진화형 KNN 프로그램입니다.
 
+### Versions
+- `0.5.x` : project init publish. predict & get-pkl.
+- `1.2.x` : help msg added.
+- `2.0.x` : scatter plot added.
+
 ### Installation
 ```
 $ pip install growKNN4fish
