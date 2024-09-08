@@ -5,6 +5,8 @@ import pickle
 import os
 import plotext as plx
 
+from fishknn import common
+
 filepath=os.path.dirname(os.path.abspath(__file__))
 
 
@@ -38,13 +40,7 @@ def predict():
     l=float(input("🆕 물고기의 길이를 입력하세요(cm) : "))
     w=float(input("🆕 물고기의 무게를 입력하세요(kg) : "))
 
-    ## 데이터가 있는지
-    if os.path.exists(f"{filepath}/data/fish.csv"):
-        df = pd.read_csv(f"{filepath}/data/fish.csv")
-        df = df[["Length","Weight","Label"]]
-    else:
-        df = pd.DataFrame({"Length":[],"Weight":[],"Label":[]})
-    #print(df)
+    df = common.load_csv()
 
     ## 모델이 있는지
     if os.path.exists(f"{filepath}/model/model.pkl"):
@@ -171,46 +167,40 @@ def show_data():
     """
     지금까지 csv로 저장된 data를 DataFrame형식으로 출력합니다.
     """
-    if os.path.exists(f"{filepath}/data/fish.csv"):
-        df = pd.read_csv(f"{filepath}/data/fish.csv")
-        df = df[["Length","Weight","Label"]]
-        print(df)
-    else:
-        print("⛔ 저장된 데이터가 없습니다.")
+    df = common.load_csv()
+    print(df)
+
 
 def draw_plot():
     """
     지금까지 csv로 저장된 data를 scatter plot으로 출력합니다.
     """
-    if os.path.exists(f"{filepath}/data/fish.csv"):
-        df = pd.read_csv(f"{filepath}/data/fish.csv")
+    df = common.load_csv()
 
-        mu=np.mean(df[["Length","Weight"]],axis=0)
-        std=np.std(df[["Length","Weight"]],axis=0)
+    mu=np.mean(df[["Length","Weight"]],axis=0)
+    std=np.std(df[["Length","Weight"]],axis=0)
 
-        l_scaling=lambda x: (x-mu.iloc[0])/std.iloc[0]
-        w_scaling=lambda x: (x-mu.iloc[1])/std.iloc[1]
+    l_scaling=lambda x: (x-mu.iloc[0])/std.iloc[0]
+    w_scaling=lambda x: (x-mu.iloc[1])/std.iloc[1]
 
-        bream_data=df[df["Label"]=="도미"]
-        smelt_data=df[df["Label"]=="빙어"]
+    bream_data=df[df["Label"]=="도미"]
+    smelt_data=df[df["Label"]=="빙어"]
 
-        bream_l=l_scaling(bream_data["Length"])
-        bream_w=w_scaling(bream_data["Weight"])
+    bream_l=l_scaling(bream_data["Length"])
+    bream_w=w_scaling(bream_data["Weight"])
 
-        smelt_l=l_scaling(smelt_data["Length"])
-        smelt_w=w_scaling(smelt_data["Weight"])
+    smelt_l=l_scaling(smelt_data["Length"])
+    smelt_w=w_scaling(smelt_data["Weight"])
 
-        plx.scatter(bream_l,bream_w, color="blue", marker="*")
-        plx.scatter(smelt_l,smelt_w, color="green", marker="*")
+    plx.scatter(bream_l,bream_w, color="blue", marker="*")
+    plx.scatter(smelt_l,smelt_w, color="green", marker="*")
 
-        plx.xlabel("Length")
-        plx.ylabel("Weight")
+    plx.xlabel("Length")
+    plx.ylabel("Weight")
 
-        plx.plotsize(60,25)
+    plx.plotsize(60,25)
 
-        plx.show()
-    else:
-        print("⛔ 저장된 데이터가 없습니다.")
+    plx.show()
 
 def run():
     df = predict()
